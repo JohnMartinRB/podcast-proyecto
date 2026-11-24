@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi Podcast · Trabajo Escolar</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="h-screen overflow-hidden">
+<div class="flex h-full">
+
+  <!-- SIDEBAR -->
+  <aside class="hidden md:flex flex-col w-60 shrink-0 bg-black p-3 gap-1">
+    <div class="flex items-center gap-2 px-3 py-4 text-lg font-bold"><span class="text-[#1DB954]" data-i="mic"></span>Mi Podcast</div>
+    <nav id="nav-desktop" class="flex flex-col gap-1"></nav>
+    <button data-act="export" class="mx-1 mt-2 flex items-center justify-center gap-2 rounded-full border border-white/20 hover:border-white py-2 text-sm transition">
+      <span data-i="save" data-c="w-4 h-4"></span>Exportar archivo
+    </button>
+    <button data-act="import" class="mx-1 mt-2 flex items-center justify-center gap-2 rounded-full border border-white/20 hover:border-white py-2 text-sm transition">
+      <span data-i="upload" data-c="w-4 h-4"></span>Importar archivo
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main id="main" class="flex-1 overflow-y-auto scroll pb-32 bg-gradient-to-b from-[#1f1f1f] to-[#121212]">
+    <div id="nav-mobile" class="md:hidden sticky top-0 z-30 bg-[#121212]/95 backdrop-blur flex gap-2 p-3 overflow-x-auto"></div>
+
+    <!-- INICIO -->
+    <section id="v-inicio" class="p-5 md:p-8">
+      <div class="rise flex flex-col md:flex-row gap-6 items-center md:items-end rounded-3xl p-6 md:p-8 mb-10 bg-gradient-to-br from-[#1DB954]/35 via-[#1a3a26] to-[#121212]">
+        <div data-act="cover-podcast" class="group relative w-48 h-48 md:w-56 md:h-56 shrink-0 rounded-xl overflow-hidden shadow-2xl cursor-pointer">
+          <img id="pod-cover" alt="" class="cover-img w-full h-full object-cover bg-[#282828]">
+          <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-2 text-sm">
+            <span data-i="upload" data-c="w-7 h-7"></span>Cambiar portada
+          </div>
+        </div>
+        <div class="text-center md:text-left min-w-0">
+          <p class="uppercase text-xs font-bold tracking-widest text-gray-300">Podcast · Trabajo escolar</p>
+          <h1 id="pod-title" class="text-4xl md:text-6xl font-extrabold my-2 break-words"></h1>
+          <p id="pod-desc" class="text-gray-300 max-w-xl"></p>
+          <div class="flex flex-wrap gap-3 mt-5 justify-center md:justify-start">
+            <button data-act="toggle" class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#1DB954] text-black font-bold hover:scale-105 transition"><span data-i="play" data-c="w-4 h-4"></span>Reproducir</button>
+            <button data-act="edit-pod" class="px-5 py-2.5 rounded-full border border-white/30 hover:border-white hover:scale-105 transition text-sm font-semibold">Editar podcast</button>
+            <button data-act="export" class="px-5 py-2.5 rounded-full border border-white/30 hover:border-white hover:scale-105 transition text-sm font-semibold">Exportar archivo</button>
+            <button data-act="import" class="px-5 py-2.5 rounded-full border border-white/30 hover:border-white hover:scale-105 transition text-sm font-semibold">Importar archivo</button>
+            <button data-act="project" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 transition text-sm font-semibold">Sobre este trabajo</button>
+          </div>
+        </div>
+      </div>
+      <h2 class="text-2xl font-bold mb-4">Episodios recientes</h2>
+      <div id="grid-recent" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+    </section>
+
+    <!-- EPISODIOS -->
+    <section id="v-episodios" class="hide p-5 md:p-8">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-2xl font-bold">Todos los episodios <span id="count" class="text-sm text-gray-400 font-normal ml-2"></span></h2>
+      </div>
+      <div id="grid-all" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+    </section>
+
+    <!-- BIBLIOTECA -->
+    <section id="v-biblioteca" class="hide p-5 md:p-8">
+      <h2 class="text-2xl font-bold mb-5">Biblioteca</h2>
+      <div id="lib-list" class="flex flex-col gap-1"></div>
+    </section>
+  </main>
+</div>
+
+<!-- BOTTOM PLAYER -->
+<footer class="fixed bottom-0 inset-x-0 h-24 bg-[#181818]/95 backdrop-blur border-t border-white/5 flex items-center gap-4 px-4 z-40">
+  <div class="flex items-center gap-3 w-1/4 min-w-0">
+    <img id="p-cover" alt="" class="w-14 h-14 rounded-md object-cover shadow bg-[#282828] shrink-0">
+    <div class="min-w-0">
+      <p id="p-title" class="truncate text-sm font-semibold">Ningún episodio seleccionado</p>
+      <p id="p-sub" class="truncate text-xs text-gray-400">Elige un episodio para reproducir</p>
+    </div>
+  </div>
+  <div class="flex-1 flex flex-col items-center gap-1 max-w-2xl mx-auto">
+    <div class="flex items-center gap-5">
+      <button data-act="back" title="Atrasar 10 s" class="relative flex p-1.5 text-gray-300 hover:text-white transition">
+        <span data-i="back" data-c="w-6 h-6"></span>
+        <span class="absolute inset-0 flex items-center justify-center text-[8px] font-bold pt-[3px]">10</span>
+      </button>
+      <button id="play-btn" data-act="toggle" class="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition">
+        <span data-i="play" data-c="w-5 h-5"></span>
+      </button>
+      <button data-act="fwd" title="Adelantar 10 s" class="relative flex p-1.5 text-gray-300 hover:text-white transition">
+        <span data-i="fwd" data-c="w-6 h-6"></span>
+        <span class="absolute inset-0 flex items-center justify-center text-[8px] font-bold pt-[3px]">10</span>
+      </button>
+    </div>
+    <div class="w-full flex items-center gap-2 text-xs text-gray-400">
+      <span id="t-cur" class="w-10 text-right">0:00</span>
+      <input id="prog" type="range" min="0" max="1000" value="0" class="flex-1">
+      <span id="t-dur" class="w-10">0:00</span>
+    </div>
+  </div>
+  <div class="w-1/4 hidden md:flex justify-end items-center gap-2 text-gray-400">
+    <span data-i="vol" data-c="w-5 h-5"></span>
+    <input id="vol" type="range" min="0" max="1" step="0.02" value="1" class="w-28">
+  </div>
+</footer>
+
+<!-- EDITOR / SUBIDA MODAL -->
+<div id="modal-editor" class="flex fixed inset-0 z-50 hide items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+  <div class="rise w-full max-w-4xl max-h-[92vh] overflow-y-auto scroll bg-[#181818] rounded-2xl p-6 grid md:grid-cols-[200px_1fr] gap-6 shadow-2xl">
+    <div class="space-y-3">
+      <img id="ed-cover" alt="" class="w-full aspect-square rounded-xl object-cover shadow-lg bg-[#282828]">
+      <button data-act="pick-cover" class="w-full flex items-center justify-center gap-2 py-2 rounded-full bg-[#282828] hover:bg-[#383838] text-sm transition">
+        <span data-i="upload" data-c="w-4 h-4"></span>Portada del episodio
+      </button>
+      <p class="text-xs text-gray-500 text-center">Vista previa instantánea</p>
+    </div>
+    <div class="space-y-4 min-w-0">
+      <div class="flex justify-between items-center">
+        <h2 id="ed-h" class="text-2xl font-bold"></h2>
+        <button data-act="close-editor" class="p-2 rounded-full hover:bg-white/10"><span data-i="x"></span></button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <label class="md:col-span-2 flex flex-col gap-1 text-xs text-gray-400">Título
+          <input id="f-title" class="bg-[#282828] rounded-lg px-3 py-2 text-white outline-none focus:ring-2 focus:ring-[#1DB954]">
+        </label>
+        <label class="flex flex-col gap-1 text-xs text-gray-400">Nº de episodio
+          <input id="f-num" type="number" min="1" class="bg-[#282828] rounded-lg px-3 py-2 text-white outline-none focus:ring-2 focus:ring-[#1DB954]">
+        </label>
+        <label class="flex flex-col gap-1 text-xs text-gray-400">Fecha
+          <input id="f-date" type="date" class="bg-[#282828] rounded-lg px-3 py-2 text-white outline-none focus:ring-2 focus:ring-[#1DB954]">
+        </label>
+        <label class="md:col-span-3 flex flex-col gap-1 text-xs text-gray-400">Descripción
+          <textarea id="f-desc" rows="3" class="bg-[#282828] rounded-lg px-3 py-2 text-white outline-none focus:ring-2 focus:ring-[#1DB954]"></textarea>
+        </label>
+      </div>
+
+      <div class="bg-[#121212] rounded-xl p-4 space-y-3">
+        <div class="flex items-center gap-3 flex-wrap">
+          <button data-act="pick-audio" class="flex items-center gap-2 px-4 py-2 rounded-full bg-[#1DB954] text-black text-sm font-semibold hover:scale-105 transition">
+            <span data-i="upload" data-c="w-4 h-4"></span>Subir audio
+          </button>
+          <span id="ed-audio-name" class="text-xs text-gray-400 truncate">Ningún archivo seleccionado</span>
+        </div>
+        <div id="wave-empty" class="h-28 flex items-center justify-center text-sm text-gray-500 border border-dashed border-white/10 rounded-lg">Sube un audio para ver su onda</div>
+        <canvas id="wave" class="hide w-full h-28 rounded-lg bg-[#181818]"></canvas>
+        <div id="cut-panel" class="hide space-y-3">
+          <div class="grid grid-cols-2 gap-3 text-xs text-gray-400">
+            <label class="flex flex-col gap-1">Inicio de corte <input id="cut-s" type="range" min="0" max="1000" value="0"></label>
+            <label class="flex flex-col gap-1">Fin de corte <input id="cut-e" type="range" min="0" max="1000" value="1000"></label>
+          </div>
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span id="cut-info" class="text-xs text-gray-400"></span>
+            <div class="flex gap-2">
+              <button data-act="cut-reset" class="px-3 py-1.5 text-xs rounded-full bg-[#282828] hover:bg-[#383838]">Restablecer</button>
+              <button data-act="cut-apply" class="flex items-center gap-1 px-3 py-1.5 text-xs rounded-full bg-white text-black font-semibold"><span data-i="cut" data-c="w-3.5 h-3.5"></span>Cortar selección</button>
+            </div>
+          </div>
+          <label class="flex items-center gap-3 text-xs text-gray-400"><span data-i="vol" data-c="w-4 h-4"></span>Volumen del episodio
+            <input id="vol-ed" type="range" min="0" max="1" step="0.05" value="1" class="flex-1">
+          </label>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-1">
+        <button data-act="close-editor" class="px-5 py-2 rounded-full text-gray-300 hover:text-white">Cancelar</button>
+        <button data-act="save" class="px-6 py-2 rounded-full bg-[#1DB954] text-black font-bold hover:scale-105 transition">Guardar episodio</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROYECTO MODAL -->
+<div id="modal-proj" class="flex fixed inset-0 z-50 hide items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+  <div class="rise w-full max-w-2xl max-h-[90vh] overflow-y-auto scroll bg-[#181818] rounded-2xl p-6 md:p-8 shadow-2xl">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold">Sobre este Trabajo Escolar</h2>
+      <div class="flex items-center gap-2">
+        <button id="proj-head-btn" data-act="proj-edit" class="px-4 py-1.5 text-xs rounded-full bg-white/10 hover:bg-white/20 transition font-semibold">Editar</button>
+        <button data-act="close-proj" class="p-2 rounded-full hover:bg-white/10"><span data-i="x"></span></button>
+      </div>
+    </div>
+    <div id="proj-body" class="space-y-6"></div>
+  </div>
+</div>
+
+<!-- EDITAR PODCAST MODAL -->
+<div id="modal-pod" class="flex fixed inset-0 z-50 hide items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+  <div class="rise w-full max-w-md bg-[#181818] rounded-2xl p-6 space-y-4 shadow-2xl">
+    <h2 class="text-xl font-bold">Editar podcast</h2>
+    <label class="flex flex-col gap-1 text-xs text-gray-400">Nombre del podcast
+      <input id="pod-t-in" class="bg-[#282828] rounded-lg px-3 py-2 text-white text-sm outline-none focus:ring-2 focus:ring-[#1DB954]">
+    </label>
+    <label class="flex flex-col gap-1 text-xs text-gray-400">Descripción
+      <textarea id="pod-d-in" rows="3" class="bg-[#282828] rounded-lg px-3 py-2 text-white text-sm outline-none focus:ring-2 focus:ring-[#1DB954]"></textarea>
+    </label>
+    <div class="flex justify-end gap-3">
+      <button data-act="close-proj" class="px-5 py-2 rounded-full text-gray-300 hover:text-white">Cancelar</button>
+      <button data-act="save-pod" class="px-6 py-2 rounded-full bg-[#1DB954] text-black font-bold hover:scale-105 transition">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXPORTAR FALLBACK MODAL -->
+<div id="modal-exp" class="flex fixed inset-0 z-50 hide items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+  <div class="rise w-full max-w-2xl bg-[#181818] rounded-2xl p-6 space-y-4 shadow-2xl">
+    <h2 class="text-xl font-bold">Exportar datos</h2>
+    <p id="exp-msg" class="text-sm text-gray-300"></p>
+    <textarea id="exp-text" readonly rows="10" class="w-full bg-[#282828] rounded-lg p-3 text-xs text-gray-200 font-mono outline-none"></textarea>
+    <div class="flex justify-end gap-3">
+      <button data-act="exp-select" class="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm">Seleccionar todo</button>
+      <button data-act="close-proj" class="px-6 py-2 rounded-full bg-[#1DB954] text-black font-bold">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="hide fixed bottom-28 left-1/2 -translate-x-1/2 bg-[#282828] border border-white/10 text-sm px-4 py-2.5 rounded-full shadow-2xl z-[60]"></div>
+
+<!-- HIDDEN INPUTS -->
+<input type="file" id="f-cover-pod" accept="image/*" class="hide">
+<input type="file" id="f-cover-ep" accept="image/*" class="hide">
+<input type="file" id="f-audio" accept="audio/*" class="hide">
+<input type="file" id="f-import" accept=".json,application/json" class="hide">
+
+<script src="js/utils.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
